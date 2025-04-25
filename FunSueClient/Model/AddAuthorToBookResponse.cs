@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FunSueClient.Model
+{
+    public class AddAuthorToBookResponse
+    {
+        public string AuthorBookRelationId { get; set; }
+        public string AuthorId { get; set; }
+        public string BookId { get; set; }
+    }
+}
