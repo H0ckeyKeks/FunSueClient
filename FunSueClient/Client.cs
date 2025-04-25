@@ -31,16 +31,16 @@ namespace FunSueClient
         }
 
         // Method for Converting the response of the server --> Output
-        private async Task<T> Output<T>(HttpResponseMessage response)
+        private async Task<T?> Output<T>(HttpResponseMessage response)
         {
 
             if (response.IsSuccessStatusCode)
             {
                 // Get response from server
-                var responseBody = await response.Content.ReadAsStringAsync();
+                string? responseBody = await response.Content.ReadAsStringAsync();
 
                 // Convert response of type JSON into a PingResponse object
-                var convertedResponse = JsonConvert.DeserializeObject<T>(responseBody);
+                T? convertedResponse = JsonConvert.DeserializeObject<T>(responseBody);
 
                 return convertedResponse;
 
@@ -56,9 +56,9 @@ namespace FunSueClient
         public async Task Ping()
         {
             // HTTP GET-Request /ping
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/ping");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/ping");
 
-            var awaitedReturn = await Output<PingResponse>(response);
+            PingResponse? awaitedReturn = await Output<PingResponse>(response);
 
             Console.WriteLine(awaitedReturn.Message);
         }
@@ -66,9 +66,9 @@ namespace FunSueClient
         // Greeting method (Get-Request)
         public async Task Greeting(string name)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/greet?name={name}");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/greet?name={name}");
 
-            var awaitedReturn = await Output<GreetingResponse>(response);
+            GreetingResponse? awaitedReturn = await Output<GreetingResponse>(response);
 
             Console.WriteLine(awaitedReturn.Greeting);
         }
@@ -76,11 +76,11 @@ namespace FunSueClient
         // CalcAdd Method (Post-Request)
         public async Task CalcAdd(CalcAddRequest request)
         {
-            var content = ToJsonContent(request);
+            JsonContent? content = ToJsonContent(request);
 
-            var response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/calc/add", content);
+            HttpResponseMessage? response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/calc/add", content);
 
-            var awaitedReturn = await Output<CalcAddResponse>(response);
+            CalcAddResponse? awaitedReturn = await Output<CalcAddResponse>(response);
 
             // Output
             Console.WriteLine(awaitedReturn.Result);
@@ -89,9 +89,9 @@ namespace FunSueClient
         // Listing all Authors (Get-Request)
         public async Task ListAuthors()
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author");
 
-            var awaitedReturn = await Output<ListAuthorsResponse>(response);
+            ListAuthorsResponse? awaitedReturn = await Output<ListAuthorsResponse>(response);
 
             foreach (Author i in awaitedReturn.Items)
             {
@@ -102,9 +102,9 @@ namespace FunSueClient
         // Getting the author by its id (Get-Request)
         public async Task GetAuthor(string authorId)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}");
 
-            var awaitedReturn = await Output<GetAuthorResponse>(response);
+            GetAuthorResponse? awaitedReturn = await Output<GetAuthorResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.AuthorId}, {awaitedReturn.LastName}, {awaitedReturn.FirstName}");
         }
@@ -112,11 +112,11 @@ namespace FunSueClient
         // Creating a new author (Post-Request)
         public async Task CreateAuthor(CreateAuthorRequest author)
         {
-            var content = ToJsonContent(author);
+            JsonContent? content = ToJsonContent(author);
 
-            var response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/author", content);
+            HttpResponseMessage? response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/author", content);
 
-            var awaitedReturn = await Output<CreateAuthorResponse>(response);
+            CreateAuthorResponse? awaitedReturn = await Output<CreateAuthorResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.AuthorId}, {awaitedReturn.LastName}, {awaitedReturn.FirstName}");
         }
@@ -124,11 +124,11 @@ namespace FunSueClient
         // Updating an existing author (Put-Request)
         public async Task UpdateAuthor(string authorId, UpdateAuthorRequest updateAuthor)
         {
-            var content = ToJsonContent(updateAuthor);
+            JsonContent? content = ToJsonContent(updateAuthor);
 
-            var response = await this.httpClient.PutAsync($"{this.BaseUrl}/api/v1/author/{authorId}", content);
+            HttpResponseMessage? response = await this.httpClient.PutAsync($"{this.BaseUrl}/api/v1/author/{authorId}", content);
 
-            var awaitedReturn = await Output<UpdateAuthorResponse>(response);
+            UpdateAuthorResponse? awaitedReturn = await Output<UpdateAuthorResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.AuthorId}, {awaitedReturn.LastName}, {awaitedReturn.FirstName}");
         }
@@ -136,11 +136,11 @@ namespace FunSueClient
         // Delete an author (Delete-Request)
         public async Task DeleteAuthor(string authorId)
         {
-            var content = ToJsonContent(authorId);
+            JsonContent? content = ToJsonContent(authorId);
             
-            var response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/author/{authorId}");
+            HttpResponseMessage? response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/author/{authorId}");
 
-            var awaitedReturn = await Output<DeleteAuthorResponse>(response);
+            DeleteAuthorResponse? awaitedReturn = await Output<DeleteAuthorResponse>(response);
 
             Console.WriteLine($"Author successfully deleted!");
         }
@@ -148,9 +148,9 @@ namespace FunSueClient
         // Listing all books (Get-Request)
         public async Task ListBooks()
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book");
 
-            var awaitedReturn = await Output<ListBooksResponse>(response);
+            ListBooksResponse? awaitedReturn = await Output<ListBooksResponse>(response);
 
             foreach (Book i in awaitedReturn.Items)
             {
@@ -161,11 +161,11 @@ namespace FunSueClient
         // Creating a new book (Post-Request)
         public async Task CreateBook(CreateBookRequest book)
         {
-            var content = ToJsonContent(book);
+            JsonContent? content = ToJsonContent(book);
 
-            var response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/book", content);
+            HttpResponseMessage? response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/book", content);
 
-            var awaitedReturn = await Output<CreateBookResponse>(response);
+            CreateBookResponse? awaitedReturn = await Output<CreateBookResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.BookId}, {awaitedReturn.Title}, {awaitedReturn.PageCount}");
         }
@@ -173,9 +173,9 @@ namespace FunSueClient
         // Getting the book by its id (Get-Request)
         public async Task GetBook(string bookId)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book/{bookId}");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book/{bookId}");
 
-            var awaitedReturn = await Output<GetBookResponse>(response);
+            GetBookResponse? awaitedReturn = await Output<GetBookResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.BookId}, {awaitedReturn.Title}, {awaitedReturn.PageCount}");
         }
@@ -183,11 +183,11 @@ namespace FunSueClient
         // Updating an existing book (Put-Request)
         public async Task UpdateBook(string bookId, UpdateBookRequest updateBook)
         {
-            var content = ToJsonContent(updateBook);
+            JsonContent? content = ToJsonContent(updateBook);
 
-            var response = await this.httpClient.PutAsync($"{this.BaseUrl}/api/v1/book/{bookId}", content);
+            HttpResponseMessage? response = await this.httpClient.PutAsync($"{this.BaseUrl}/api/v1/book/{bookId}", content);
 
-            var awaitedReturn = await Output<UpdateBookResponse>(response);
+            UpdateBookResponse? awaitedReturn = await Output<UpdateBookResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.BookId}, {awaitedReturn.Title}, {awaitedReturn.PageCount}");
         }
@@ -195,9 +195,9 @@ namespace FunSueClient
         // Deleting a book (Delete-Request)
         public async Task DeleteBook(string bookId)
         {
-            var response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/book/{bookId}");
+            HttpResponseMessage? response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/book/{bookId}");
 
-            var awaitedReturn = await Output<DeleteBookResponse>(response);
+            DeleteBookResponse? awaitedReturn = await Output<DeleteBookResponse>(response);
 
             Console.WriteLine("Book successfully deleted!");
         }
@@ -205,9 +205,9 @@ namespace FunSueClient
         // Connecting a book with an author (Post-Request)
         public async Task AddBookToAuthor(string authorId, string bookId)
         {
-            var response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}", null);
+            HttpResponseMessage? response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}", null);
 
-            var awaitedReturn = await Output<ConnectBookAndAuthorResponse>(response);
+            ConnectBookAndAuthorResponse? awaitedReturn = await Output<ConnectBookAndAuthorResponse>(response);
 
             Console.WriteLine($"Book successfully added to author");
         }
@@ -215,9 +215,9 @@ namespace FunSueClient
         // Connecting an author with a book (Post-Request)
         public async Task AddAuthorToBook(string bookId, string authorId)
         {
-            var response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author/{authorId}", null);
+            HttpResponseMessage? response = await this.httpClient.PostAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author/{authorId}", null);
 
-            var awaitedReturn = await Output<ConnectBookAndAuthorResponse>(response);
+            ConnectBookAndAuthorResponse? awaitedReturn = await Output<ConnectBookAndAuthorResponse>(response);
 
             Console.WriteLine($"Author successfully added to Book");
         }
@@ -225,9 +225,9 @@ namespace FunSueClient
         // Listing all books by the same author (Get-Request)
         public async Task ListBooksByAuthor(string authorId)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book");
 
-            var awaitedReturn = await Output<ListBooksByAuthorResponse>(response);
+            ListBooksByAuthorResponse? awaitedReturn = await Output<ListBooksByAuthorResponse>(response);
 
             foreach (Book i in awaitedReturn.Items)
             {
@@ -238,9 +238,9 @@ namespace FunSueClient
         // Getting the relation between an author and a book (Get-Request)
         public async Task GetAuthorBookRelation(string authorId, string bookId)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}");
 
-            var awaitedReturn = await Output<GetAuthorBookRelationResponse>(response);
+            GetAuthorBookRelationResponse? awaitedReturn = await Output<GetAuthorBookRelationResponse>(response);
 
             Console.WriteLine($"{awaitedReturn.AuthorBookRelationId}, {awaitedReturn.AuthorId}, {awaitedReturn.BookId}");
         }
@@ -248,9 +248,9 @@ namespace FunSueClient
         // Removing an author from a book (Delete-Request)
         public async Task RemoveAuthorFromBook(string bookId, string authorId)
         {
-            var response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author/{authorId}");
+            HttpResponseMessage? response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author/{authorId}");
 
-            var awaitedReturn = await Output<RemoveConnectionBookAndAuthorRequest>(response);
+            RemoveConnectionBookAndAuthorRequest? awaitedReturn = await Output<RemoveConnectionBookAndAuthorRequest>(response);
 
             Console.WriteLine("Author Successfully removed from the book!");
         }
@@ -258,9 +258,9 @@ namespace FunSueClient
         // Removing a book from an author (Delete-Request)
         public async Task RemoveBookFromAuthor(string authorId, string bookId)
         {
-            var response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}");
+            HttpResponseMessage? response = await this.httpClient.DeleteAsync($"{this.BaseUrl}/api/v1/author/{authorId}/book/{bookId}");
 
-            var awaitedReturn = await Output<RemoveConnectionBookAndAuthorRequest>(response);
+            RemoveConnectionBookAndAuthorRequest? awaitedReturn = await Output<RemoveConnectionBookAndAuthorRequest>(response);
 
             Console.WriteLine("Book Successfully removed from the author!");
         }
@@ -268,9 +268,9 @@ namespace FunSueClient
         // Listing all authors by a book (Get-Request)
         public async Task ListAuthorsByBook(string bookId)
         {
-            var response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author");
+            HttpResponseMessage? response = await this.httpClient.GetAsync($"{this.BaseUrl}/api/v1/book/{bookId}/author");
 
-            var awaitedReturn = await Output<ListAuthorsByBooksResponse>(response);
+            ListAuthorsByBooksResponse? awaitedReturn = await Output<ListAuthorsByBooksResponse>(response);
 
             foreach (Author i in awaitedReturn.Items)
             {
