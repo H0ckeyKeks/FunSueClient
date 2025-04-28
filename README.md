@@ -1,7 +1,5 @@
 # FunSueClient
 
-# FunSueClient
-
 [![.NET](https://img.shields.io/badge/.NET-6.0%2F7.0-blue?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Visual Studio](https://img.shields.io/badge/Visual%20Studio-2022+-purple?logo=visual-studio)](https://visualstudio.microsoft.com/)
 [![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey?logo=windows)](https://microsoft.com/windows)
@@ -13,7 +11,7 @@
 
 **FunSueClient** is a .NET solution composed of multiple projects:
 
-- **FunSueClient** — likely the main client library
+- **FunSueClient** — the main client library
 - **FunSueClientConsole** — a console application
 - **FunSueClientWPF** — a WPF (Windows Presentation Foundation) desktop application
 
@@ -72,6 +70,7 @@ dotnet run --project FunSueClientConsole/FunSueClientConsole.csproj
 
 ### Run WPF Application
 
+--- The WPF Application will be added soon ---
 1. Set **FunSueClientWPF** as the startup project.
 2. Press **F5** to launch the GUI.
 
